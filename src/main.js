@@ -21,7 +21,7 @@ export default {
       navigationBarTextStyle: 'black'
     },
     tabBar: {
-      color:'#cdcdcd',
+      color:'#8a8a8a',
       selectedColor:'#1296db',
       list: [{
         pagePath: 'pages/index/main',
@@ -34,6 +34,12 @@ export default {
         iconPath:'/static/icon/shuo.png',
         selectedIconPath:'/static/icon/shu.png'
       },
+        {
+          pagePath: 'pages/collect/main',
+          text: '我的收藏',
+          iconPath:'/static/icon/shou.png',
+          selectedIconPath:'/static/icon/sh.png'
+        },
         {
           pagePath: 'pages/my/main',
           text: '个人中心',

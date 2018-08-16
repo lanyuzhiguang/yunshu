@@ -20,7 +20,7 @@
      </div>
      <div class="last-look">
        <span>上次查看:&nbsp;{{bookitem.title.title}}</span>
-       <span>两天前</span>
+       <span ><timego :time="bookitem.updatedTime"></timego ></span>
      </div>
      <div class="btns">
        <button class="btn" @click="continueread(bookitem.title)">继续阅读</button>
@@ -32,12 +32,16 @@
 </template>
 
 <script>
+  import timego from '@/components/time'
   export default {
     data(){
      return{
        loading:false,
        bookarr:[]
      }
+    },
+    components:{
+      timego
     },
     methods: {
 
@@ -117,14 +121,14 @@
   }
   .section{
     color: #ccc;
-    font-size: 14px;
+    font-size: 12px;
   }
   .tiao, .last-look{
     line-height: 30rpx;
     height: 30rpx;
     padding-top: 16rpx;
     color: #ccc;
-    font-size: 14px;
+    font-size: 12px;
     display: flex;
     justify-content: space-between;
   }

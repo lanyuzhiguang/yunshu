@@ -39,7 +39,7 @@
           <div class="item-data ">
             <div class="author">{{bookitem.author}}</div>
             <div class="time">
-              <span class="updata">两天前</span>
+              <!--<span class="updata"><gettime :time=""></gettime></span>-->
               <span class="variety"> &nbsp;{{categoryitem.title}}</span>
               <span class="look">{{bookitem.looknums}}人在看</span>
             </div>
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import gettime from '@/components/time'
 import {axios} from '../../utils/index'
 export default {
   data () {
@@ -61,6 +62,9 @@ export default {
       swiperarr:[],
       categoryarr:[],
     }
+  },
+  components:{
+    gettime
   },
   methods: {
     getwiper () {

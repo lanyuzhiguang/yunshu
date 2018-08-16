@@ -27,9 +27,9 @@
       </div>
     </div>
       <div class="book-data-botom">
-        <button>加入收藏</button>
+        <button @click="collect" :disabled="isCollected"> {{isCollected ? '已收藏' : '加入收藏'}}</button>
         <button open-type="share">分享好友</button>
-        <button @click="handleClick">分享朋友圈</button>
+        <!--<button @click="handleClick">分享朋友圈</button>-->
       </div>
     </div>
     <div class="book-introduce">
@@ -65,11 +65,12 @@ export default {
         bookId:'',
         bookcontent:{},
         booklength:'',
-        loading:false
+        loading:false,
+        isCollected: false
       }
     },
   methods:{
-      initData(){
+    initData(){
         this. bookcontent={}
       },
     getonebook(){
@@ -78,7 +79,9 @@ export default {
       axios.get(`/book/${this.bookId}`).then(res=>{
         this.bookcontent=res.data
         this.booklength=res.length
+        this.isCollected = res.isCollect===1
         this.loading=false
+        console.log(res);
     })
     },
     handleread(){
@@ -86,12 +89,32 @@ export default {
         url: `/pages/catalogue/main?id=${this.bookId}`
       })
     },
-
-    handleClick () {
-      wx.showModal({
-        title: '该功能将在上线后逐步完善'
+    collect(){
+      let bookId =this.bookId
+       this.$fetch.post('/collection',{bookId}, res=>{
+         if(res.code===200){
+           wx.showToast({
+             title: '收藏成功',
+             icon: 'success',
+             duration: 1000
+           })
+           console.log(res);
+           this.isCollected= 1
+         }
+         else{
+           wx.showToast({
+             title: res.msg,
+             icon: 'warning',
+             duration: 1000
+           })
+         }
       })
-    },
+    }
+    // handleClick () {
+    //   wx.showModal({
+    //     title: '该功能将在上线后逐步完善'
+    //   })
+    // },
   },
   onLoad (options) {
     this.bookId = options.id
@@ -159,11 +182,11 @@ export default {
   .book-data-botom{
     padding: 10px 0;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
   }
   .book-data-botom button{
-    width: 100px;
-    height: 32px;
+    width: 300rpx;
+    height: 64rpx;
     font-size: 15px;
     color: #999999;
     background: #EDEDED;
