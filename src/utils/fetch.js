@@ -48,8 +48,14 @@ export const login=function() {
             appid:	'wx5b602f51ecae95c0',
             secret:'43147787db4e3057dc5552098df8a1c7'
         },function(data) {
-
           console.log(data);
+          if(data.code==200){
+            wx.showToast({
+              title: '登录成功',
+              icon: 'success',
+              duration: 1000
+            })
+          }
           resolve(data)
         })
       }

@@ -61,6 +61,16 @@
   .collect{
     padding: 20rpx 40rpx;
   }
+  .loading{
+    width: 200rpx;
+    height: 200rpx;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
   .home-list-item{
     display: flex;
     justify-content: space-between;
