@@ -4,7 +4,7 @@
      <div class="catalogue-content">
        <div class="catalogue-content-item"
             v-for="(catalogueitem,index) in cataloguearr" :key="index"
-            @click="handlearticle(catalogueitem._id,bookId)">
+            @click="handlearticle(catalogueitem._id,bookId,catalogueitem.title)">
          {{catalogueitem.title}}
        </div>
      </div>
@@ -34,9 +34,9 @@
           // console.log(res.data);
         })
       },
-      handlearticle(val,bookId){
+      handlearticle(val,bookId,name){
         wx.navigateTo({
-          url:`/pages/detail/main?id=${val}`+`&bookId=${bookId}`
+          url:`/pages/detail/main?id=${val}`+`&bookId=${bookId}`+`&name=${name}`
         })
       }
     },

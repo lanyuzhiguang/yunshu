@@ -7,7 +7,7 @@ export default {
   config: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: '文章详情',
+    navigationBarTitleText: '',
     navigationBarTextStyle: 'black',
     usingComponents: {
       wemark: '../../static/wemark/wemark'

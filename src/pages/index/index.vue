@@ -16,7 +16,8 @@
       </block>
     </swiper>
     </div>
-    <div class="home-content" v-for="(categoryitem,index) in categoryarr" :key="index">
+    <div class="home-content"
+         v-for="(categoryitem,index) in categoryarr" :key="index">
     <div class="home-title">
       <img :src="categoryitem.icon" class="category-img">&nbsp;{{categoryitem.title}}
     </div>

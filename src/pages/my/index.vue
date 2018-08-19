@@ -65,51 +65,26 @@
       }
     },
     methods: {
+      initData(){
+        this.bookarr=[]
+          this.lookarr=[]
+      },
       login() {
+        this.initData()
+        loading:true
         login()
-        // wx.login({
-        //   success(res) {
-        //     console.log(res);
-        //     wx.request({
-        //       url: 'https://m.yaojunrong.com/login',
-        //       method: 'POST',
-        //       header: {
-        //         'Content-Type': 'application/json'
-        //       },
-        //       success(data) {
-        //         console.log(data);
-        //         console.log(data.header.Token);
-        //         wx.setStorageSync('token', data.header.Token)
-        //       }
-        //     })
-        //   }
-        // })原生
+        loading:false
       },
       getData() {
-        this.loading=true
+        this.initData()
         this.$fetch.get('/readList',{},res=>{
           this.lookarr=res.data
-          this.loading=false
         })
-        // let token = wx.getStorageSync('token')
-        // wx.request({
-        //   url: 'https://m.yaojunrong.com/readList',
-        //   method: 'GET',
-        //   header: {
-        //     'Content-Type': 'application/json',
-        //     token: token
-        //   },
-        //   success(data) {
-        //     console.log(data);
-        //   }
-        //
-        // })原生
       },
       getcollect(){
-        this.loading=true
+        this.initData()
         this.$fetch.get('/collection',{}, res=>{
           this.bookarr=res.data
-          this.loading=false
         })
       },
       handlelook(){
@@ -126,6 +101,10 @@
         console.log(e.detail.userInfo)
       }
     },
+    // onShow(){
+    //   this.getData()
+    //   this.getcollect()
+    // },
     onLoad() {
       // 查看是否授权
       this.loading=true
@@ -143,8 +122,6 @@
                 self.getcollect()
                 self.loading=false
                 // console.log(self);
-
-
               }
             })
           }

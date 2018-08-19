@@ -81,7 +81,6 @@ export default {
         this.booklength=res.length
         this.isCollected = res.isCollect===1
         this.loading=false
-        console.log(res);
     })
     },
     handleread(){
@@ -98,7 +97,6 @@ export default {
              icon: 'success',
              duration: 1000
            })
-           console.log(res);
            this.isCollected= 1
          }
          else{

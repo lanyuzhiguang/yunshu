@@ -7,7 +7,7 @@
                 link highlight type="wemark"></wemark>
       </div>
       <div class="detail-icon" >
-        <img src="/static/icon/bank.png" class="icon" @click="handleback">
+        <img src="/static/icon/back.png" class="icon" @click="handleback">
         <img src="/static/icon/mulu.png" class="icon" @click="handlemulu">
         <img src="/static/icon/jia.png" class="icon" @click="handlejia">
         <img src="/static/icon/jian.png" class="icon" @click="handlejian">
@@ -23,7 +23,7 @@
                      <!--@click.stop="stop"-->
                      <!--class="left">-->
         <div class="catalogue-content-item"
-               :style="catalogueitem._id==articleId?'background:#ff0':''"
+               :style="catalogueitem._id==articleId?'background:#EDEDED':''"
                v-for="(catalogueitem,index) in cataloguearr" :key="index"
                @click="getarticle(catalogueitem._id)">
             {{catalogueitem.title}}
@@ -47,6 +47,7 @@
         isshow:false,
         trans:0,
         loading:false,
+        NavigationBarTitle:''
       }
     },
     methods: {
@@ -61,6 +62,7 @@
         const cataloguearr = await axios.get(`/titles/${this.$root.$mp.query.bookId}`)
         this.article = article.data
         this.cataloguearr = cataloguearr.data
+        this.NavigationBarTitle=this.article.title
         this.loading=false
         this.index = this.cataloguearr.findIndex(item => item._id === this.articleId)
       },
@@ -90,6 +92,8 @@
             res=>{
               this.article=res.data
               this.articleId=res.data.article.titleId
+              this.NavigationBarTitle=res.data.title
+              wx.setNavigationBarTitle({ title: this.NavigationBarTitle })
               this.index--
               this.loading=false
             }
@@ -108,6 +112,8 @@
             res=>{
               this.article=res.data
               this.articleId=res.data.article.titleId
+              this.NavigationBarTitle=res.data.title
+              wx.setNavigationBarTitle({ title: this.NavigationBarTitle })
               this.index++
               this.loading=false
             }
@@ -128,7 +134,10 @@
          axios.get(`/article/${id}`).then(res=>{
           this.article=res.data
           this.articleId=res.data.article.titleId
-          this.index = this.cataloguearr.findIndex(item => item._id === id)
+           this.NavigationBarTitle=res.data.title
+           wx.setNavigationBarTitle({ title: this.NavigationBarTitle })
+
+           this.index = this.cataloguearr.findIndex(item => item._id === id)
          this.loading=false
           }
         )
@@ -142,7 +151,9 @@
     },
     onLoad(options) {
       this.articleId = options.id
+      this.NavigationBarTitle=options.name
       this.getData();
+        wx.setNavigationBarTitle({ title: this.NavigationBarTitle })      // options.name表示上个页面传过来的文字
     },
     onShareAppMessage (obj) {
       return {
@@ -177,12 +188,13 @@
   justify-content: space-around;
   align-items: center;
   background: #fff;
-  padding: 10rpx 0;
+  padding: 20rpx 0;
+  border-top: 1px solid #ddd;
 }
   .icon{
     display: block;
-    width: 50rpx;
-    height: 50rpx;
+    width: 45rpx;
+    height: 45rpx;
 
   }
   /*.lefttop{*/

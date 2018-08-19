@@ -1,6 +1,7 @@
 <template>
   <div class="collect">
-    <img src="/static/Spinner-1s-63px.svg" class="loading" v-show="loading">
+    <img src="/static/Spinner-1s-63px.svg"
+         class="loading" v-show="loading">
     <div class="home-list-item"
          v-for="(bookitem,bookindex) in bookarr"
          :key="bookindex" v-if="!loading"
@@ -31,14 +32,17 @@
     data(){
       return{
         loading:false,
-        bookarr:[]
+        bookarr:[],
+        pn:1,
+        size:2
       }
     },
-
     methods: {
       getcollect(){
+        let pn=this.pn
+        let size=this.size
         this.loading=true
-        this.$fetch.get('/collection',{}, res=>{
+        this.$fetch.get('/collection',{size,pn}, res=>{
           this.bookarr=res.data
           this.loading=false
         })
@@ -47,14 +51,33 @@
         wx.navigateTo({
           url:`/pages/counter/main?id=${val}`
         })
-      }
+      },
+
     },
 
 
     onShow(){
       this.getcollect()
+    },
+    onPullDownRefresh(){
+      // let self=this
+      // wx.showNavigationBarLoading() //在标题栏中显示加载
+      wx.setBackgroundTextStyle({
+        textStyle: 'dark', // 下拉背景字体、loading 图的样式为dark
+      })
+        let pn=this.pn+1
+        let size=this.size
+      this.$fetch.get('/collection',{size,pn}, res=>{
+        console.log(res.data)
+        for(var a=0; a<res.data.length;a++){
+          this.bookarr.push(res.data[a])
+
+        }
+        wx.stopPullDownRefresh()
+      })
     }
-  }
+
+    }
 </script>
 
 <style scoped>

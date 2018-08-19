@@ -18,7 +18,8 @@ export default {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: '云书',
-      navigationBarTextStyle: 'black'
+      navigationBarTextStyle: 'black',
+      // enablePullDownRefresh: true
     },
     tabBar: {
       color:'#8a8a8a',
@@ -48,5 +49,6 @@ export default {
           navigationBarBackgroundColor: '#1982D3'
         }]
     },
+
   }
 }
