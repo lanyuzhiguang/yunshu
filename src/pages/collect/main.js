@@ -10,6 +10,6 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: '我的收藏',
     navigationBarTextStyle: 'black',
-    enablePullDownRefresh: true
+    onReachBottomDistance: true,
   }
 }

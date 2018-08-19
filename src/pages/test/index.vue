@@ -38,6 +38,33 @@
     //     }
     //   })
     // }
+    // onReachBottom(){
+    //   // let self=this
+    //   // wx.showNavigationBarLoading() //在标题栏中显示加载
+    //   // wx.setBackgroundTextStyle({
+    //   //   textStyle: 'dark', // 下拉背景字体、loading 图的样式为dark
+    //   // })
+    //   wx.showToast({
+    //     title: '加载中...',
+    //     duration: 600
+    //   });
+    //   this.pn=this.pn+1
+    //   let pn=this.pn
+    //   console.log(pn);
+    //   this.$fetch.get(`/collection?${pn}&size=3`, res=>{
+    //     if(res.data){
+    //
+    //     }else{
+    //       wx.showToast({
+    //         title: '没有更多数据',
+    //         duration: 600
+    //       });
+    //       this.loa=true
+    //     }
+    //
+    //
+    //   })
+    // }
   }
 </script>
 

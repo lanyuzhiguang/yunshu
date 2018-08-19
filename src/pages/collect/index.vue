@@ -2,28 +2,18 @@
   <div class="collect">
     <img src="/static/Spinner-1s-63px.svg"
          class="loading" v-show="loading">
-    <div class="home-list-item"
-         v-for="(bookitem,bookindex) in bookarr"
-         :key="bookindex" v-if="!loading"
-         @click="handlebook(bookitem.book._id)">
-      <div class="item-img">
-        <img :src="bookitem.book.img" >
-      </div>
-      <div class="item-right">
-        <div class="right-top">
-          <div class="item-title">
-            <span>{{bookitem.book.title}}</span>
-          </div>
-          <div class="item-content">
-            {{bookitem.book.desc}}
-          </div>
-        </div>
-        <div class="item-data ">
-          <div class="author">{{bookitem.book.author}}</div>
-            <span class="look">{{bookitem.book.looknums}}人在看</span>
-        </div>
-      </div>
+    <div class="home-list-item">
+      <div class="item"
+           v-for="(bookitem,bookindex) in bookarr"
+           :key="bookindex" v-if="!loading"
+           @click="handlebook(bookitem.book._id)">
+      <img :src="bookitem.book.img" class="item-img">
+      <div class="bookname">{{bookitem.book.title}}</div>
+
     </div>
+    </div>
+
+    <div class="loa" v-show="loamei">我是有底线滴</div>
   </div>
 </template>
 
@@ -34,17 +24,25 @@
         loading:false,
         bookarr:[],
         pn:1,
-        size:2
+        size:3,
+        loamei:false,
+        qidong:true
       }
     },
     methods: {
       getcollect(){
         let pn=this.pn
-        let size=this.size
-        this.loading=true
-        this.$fetch.get('/collection',{size,pn}, res=>{
-          this.bookarr=res.data
-          this.loading=false
+        this.loading=true;
+        this.$fetch.get(`/collection?pn=${pn}&size=6`,{}, res=>{
+          if(res.data.length==0){
+            this.qidong=false
+            this.loading=false
+
+          }
+          else{
+            this.bookarr = this.bookarr.concat(res.data)
+            this.loading=false
+          }
         })
       },
       handlebook(val){
@@ -54,27 +52,18 @@
       },
 
     },
-
-
     onShow(){
+      this.loamei=false
       this.getcollect()
     },
-    onPullDownRefresh(){
-      // let self=this
-      // wx.showNavigationBarLoading() //在标题栏中显示加载
-      wx.setBackgroundTextStyle({
-        textStyle: 'dark', // 下拉背景字体、loading 图的样式为dark
-      })
-        let pn=this.pn+1
-        let size=this.size
-      this.$fetch.get('/collection',{size,pn}, res=>{
-        console.log(res.data)
-        for(var a=0; a<res.data.length;a++){
-          this.bookarr.push(res.data[a])
-
-        }
-        wx.stopPullDownRefresh()
-      })
+    onReachBottom(){
+      if(this.qidong){
+        this.pn +=1
+        this.getcollect()
+      }
+      else{
+        this.loamei=true
+      }
     }
 
     }
@@ -97,44 +86,30 @@
   .home-list-item{
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    flex-wrap: wrap;
+
   }
-  .item-img{
-    width: 30%;
-  }
-  .item-img img{
-    width:100%;
-    height:150px;
-  }
-  .item-right{
-    width: 70%;
-    height:140px;
-    padding-top: 10px;
+  .item{
+    margin: 5px 0;
     display: flex;
     flex-direction: column;
-    padding-left: 14px;
-    justify-content: space-between;
-    padding-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    width: 45%;
   }
-  .item-title{
-    font-size: 14px;
-    color: #000;
-    font-weight: 700;
+  .item-img{
+    width: 100%;
+    height:150px;
   }
-  .item-content{
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp:4;
-    overflow: hidden;
-    font-size: 12px;
-    color: #999999;
-    line-height:1.5;
+  .bookname{
+    padding-top: 15px;
+    color: #8a8a8a;
+    font-size: 10px;
   }
-  .item-data{
-    display: flex;
-    justify-content: space-between;
-    padding-top: 8px;
-    color: #999999;
+  .loa{
+    text-align: center;
+    color: #8a8a8a;
     font-size: 12px;
   }
 
