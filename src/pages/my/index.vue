@@ -1,25 +1,26 @@
 <template>
   <div class="my-contaner">
-    <img src="/static/Spinner-1s-63px.svg" class="loading" v-show="loading">
+    <img src="/static/Spinner-1s-63px.svg"
+         class="loading" v-show="loading">
    <div v-if="!loading">
     <div class="my" >
       <div class="content">
          <div class="message">
            <div class="message-imgs">
-             <open-data type="userAvatarUrl" class="open-data"></open-data>
+             <img :src="user.avatarUrl" alt="" class="user-img">
            </div>
            <div class="message-name">
-            <open-data type="userNickName"></open-data>
+           {{user.nickName}}
            </div>
          </div>
         <div class="myall">
-          <div class="one" >
+          <div class="one" @click="handlecollect">
             <div class="num">{{bookarr.length}}</div>
             <div class="numname">
               收藏
             </div>
           </div>
-          <div class="one" >
+          <div class="one" @click="handlelook">
             <div class="num">{{lookarr.length}}</div>
             <div class="numname">
               已看
@@ -36,14 +37,15 @@
     </div>
     <div class="nothing">
       <img src="/static/icon/saosao.png" class="nothing-img">
-      <img src="/static/icon/wendang.png" class="nothing-img" @click="handlecollect">
+      <img src="/static/icon/wendang.png" class="nothing-img" >
       <img src="/static/icon/jianyi.png" class="nothing-img">
-      <img src="/static/icon/look.png" class="nothing-img" @click="handlelook">
+      <img src="/static/icon/look.png" class="nothing-img" >
       <img src="/static/icon/qianbao.png" class="nothing-img">
 
     </div>
-    <div class="btn" v-if="loginbtn">
+    <div class="btns" v-if="loginbtn">
       <button v-show="canIUse"
+                  class="btn"
                   open-type="getUserInfo"
                   bindgetuserinfo="bindGetUserInfo"
                   @click="login">授权登录</button>
@@ -57,6 +59,7 @@
   export default {
     data(){
       return{
+        user:{},
         bookarr:[],
         lookarr:[],
         loginbtn:true,
@@ -93,7 +96,7 @@
         })
       },
       handlecollect(){
-        wx.switchTab({
+        wx.navigateTo({
           url: '/pages/collect/main'
         })
       },
@@ -106,16 +109,17 @@
     //   this.getcollect()
     // },
     onLoad() {
-      // 查看是否授权
       this.loading=true
+      // 查看是否授权
       let self=this
       wx.getSetting({
         success: function(res){
-
           if (res.authSetting['scope.userInfo']) {
             // 已经授权，可以直接调用 getUserInfo 获取头像昵称
             wx.getUserInfo({
               success: function(res) {
+                self.user=res.userInfo
+                console.log(res.userInfo);
                 // console.log(res.userInfo)
                 self.loginbtn=false
                 self.getData()
@@ -124,6 +128,9 @@
                 // console.log(self);
               }
             })
+          }
+          else{
+            self.loading=false
           }
         }
       })
@@ -158,7 +165,7 @@
     align-items: flex-start;
     width: 400 rpx;
   }
-  .open-data{
+  .user-img{
     margin-left: 40rpx;
     width:120rpx;
     height: 120rpx;
@@ -198,8 +205,14 @@
     width: 60rpx;
     height: 60rpx;
   }
+  .btns{
+    padding: 0 40rpx;
+    margin-top: 500rpx;
+  }
   .btn{
     padding: 0 40rpx;
     margin-top: 500rpx;
+    background: #1982D3;
+    color: #fff;
   }
 </style>

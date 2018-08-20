@@ -36,10 +36,10 @@ export default {
         selectedIconPath:'/static/icon/shu.png'
       },
         {
-          pagePath: 'pages/collect/main',
-          text: '我的收藏',
-          iconPath:'/static/icon/shou.png',
-          selectedIconPath:'/static/icon/sh.png'
+          pagePath: 'pages/allbook/main',
+          text: '书城',
+          iconPath:'/static/icon/allbook.png',
+          selectedIconPath:'/static/icon/all.png'
         },
         {
           pagePath: 'pages/my/main',

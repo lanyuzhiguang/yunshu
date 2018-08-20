@@ -82,9 +82,29 @@
       },
 
 
-    onShow(){
-      this.getData()
-  }
+  //   onShow(){
+  //     this.getData()
+  // },
+    onLoad() {
+      this.loading=true
+      // 查看是否授权
+      let self=this
+      wx.getSetting({
+        success: function(res){
+          if (res.authSetting['scope.userInfo']) {
+            self.getData()
+            self.loading=false
+          }
+          else{
+            self.loading=false
+            wx.showToast({
+                  title: '您还没有登录请登录',
+                  duration: 2500
+                });
+          }
+        }
+      })
+    },
   }
 </script>
 

@@ -56,6 +56,27 @@
       this.loamei=false
       this.getcollect()
     },
+    onLoad() {
+      this.loading=true
+      // 查看是否授权
+      let self=this
+      wx.getSetting({
+        success: function(res){
+          if (res.authSetting['scope.userInfo']) {
+            self.loamei=false
+            self.getcollect()
+            self.loading=false
+          }
+          else{
+            self.loading=false
+            wx.showToast({
+              title: '您还没有登录请登录',
+              duration: 2500
+            });
+          }
+        }
+      })
+    },
     onReachBottom(){
       if(this.qidong){
         this.pn +=1
@@ -100,7 +121,7 @@
   }
   .item-img{
     width: 100%;
-    height:150px;
+    height:140px;
   }
   .bookname{
     padding-top: 15px;

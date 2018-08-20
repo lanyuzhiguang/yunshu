@@ -50,6 +50,9 @@ export const login=function() {
         },function(data) {
           console.log(data);
           if(data.code==200){
+            wx.reLaunch({
+              url: 'pages/my/main'
+            })
             wx.showToast({
               title: '登录成功',
               icon: 'success',
