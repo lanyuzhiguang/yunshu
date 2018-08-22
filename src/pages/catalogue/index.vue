@@ -1,7 +1,7 @@
 <template>
     <div>
       <img src="/static/Spinner-1s-63px.svg" class="loading" v-show="loading">
-     <div class="catalogue-content">
+     <div class="catalogue-content" v-if="!loading">
        <div class="catalogue-content-item"
             v-for="(catalogueitem,index) in cataloguearr" :key="index"
             @click="handlearticle(catalogueitem._id,bookId,catalogueitem.title)">
@@ -22,9 +22,7 @@
       }
     },
     methods:{
-      initData(){
-        this.cataloguearr=[]
-      },
+
       getcatalogue(){
         this.loading=true
         this.initData()

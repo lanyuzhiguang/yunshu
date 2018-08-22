@@ -1,17 +1,12 @@
 <template>
-  <div class="allbook">
+  <div class="categoryall">
     <img src="/static/Spinner-1s-63px.svg"
          class="loading" v-show="loading">
-    <div class="allbook-data" v-if="!loading">
-      <div class="allbook-content"
-           v-for="(categoryitem,index) in categoryarr" :key="index">
-        <div class="allbook-title" @click="handelecategory(categoryitem._id)">
-          <img :src="categoryitem.icon"
-               class="category-img">&nbsp;{{categoryitem.title}}
-        </div>
-        <div class="allbook-list" >
-          <div class="allbook-list-item"
-               v-for="(bookitem,bookindex) in categoryitem.books"
+    <div class="categoryall-data" v-if="!loading">
+      <div class="categoryall-content">
+        <div class="categoryall-list" >
+          <div class="categoryall-list-item"
+               v-for="(bookitem,bookindex) in categoryarr"
                :key="bookindex" @click="handlebook(bookitem._id)">
             <div class="item-img">
               <img :src="bookitem.img" >
@@ -37,6 +32,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
     <div class="loa" v-show="loameione">正在加载中...</div>
@@ -50,13 +46,14 @@
   export default {
     data () {
       return {
-        swiperarr:[],
+        loading:false,
         categoryarr:[],
         pn:1,
+        typeId:'',
+        NavigationBarTitle:'',
         qidong:true,
-        loading:false,
-        loameione:false,
         loamei:false,
+        loameione:false
       }
     },
     components:{
@@ -64,53 +61,45 @@
     },
     methods: {
       getcategory(){
-        let pn=this.pn
         this.loameione=false
-        this.loading=true;
-        axios.get(`/category/books?pn=${pn}&size=2&booksSize=2`).then(res => {
-         if(res.data.length==0){
-           this.loading=false
-           this.qidong=false
-           this.loamei=true
+        this.loading=true
+        let pn=this.pn
+        axios.get(`/category/${this.typeId}/books?pn=${pn}&size=4`).then(res => {
+          if(res.data.books.length==0){
+            this.loading=false
+            this.qidong=false
+            this.loamei=true
+          }
+          else{
+            this.NavigationBarTitle=res.data.title
+            wx.setNavigationBarTitle({ title: this.NavigationBarTitle })
+            this.categoryarr=this.categoryarr.concat(res.data.books)
+            this.loading=false
+          }
+        })
+      },
+      handlebook(val){
+        wx.navigateTo({
+          url:`/pages/counter/main?id=${val}`
+        })
+      },
 
-         }else{
-           this.categoryarr=this.categoryarr.concat(res.data)
-           this.loading=false
-         }
-        })
-      },
-      handelecategory(val){
-        // getApp().globalData.category_id=val
-        // console.log(123);
-        wx.navigateTo({
-          url:`/pages/category/main?id=${val}`
-        })
-      },
-      // getcategory(){
-      //   axios.get('/category/books').then(res => {
-      //     this.categoryarr=res.data
-      //   })
-      // },
-      handlebook(id){
-        wx.navigateTo({
-          url:`/pages/counter/main?id=${id}`
-        })
-      }
     },
-    mounted () {
+    onLoad (options) {
+      this.typeId= options.id
       this.getcategory();
     },
     onUnload(){
-      this.bookarr = []
+      this.categoryarr = []
     },
     onReachBottom(){
+
       if(this.qidong){
         this.loameione=true
         this.pn +=1
         this.getcategory()
       }
       else{
-        this.loameione=false
         this.loamei=true
       }
     }
@@ -118,7 +107,7 @@
 </script>
 
 <style scoped>
-  .allbook{
+  .categoryall{
     padding: 10px;
   }
   .loading{
@@ -131,26 +120,11 @@
     right: 0;
     margin: auto;
   }
-  .allbook-title{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding-bottom: 10px;
-    color: #000;
-    font-size: 18px;
-    font-weight: 700;
-    height: 40px;
-    line-height: 40px;
-  }
-  .category-img{
-    width: 30px;
-    height: 40px;
-  }
-  .allbook-content{
+  .categoryall-content{
     padding: 10px 0;
     background: #fff;
   }
-  .allbook-list-item{
+  .categoryall-list-item{
     display: flex;
     justify-content: space-between;
     margin-top: 10px;

@@ -10,5 +10,6 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: '书城',
     navigationBarTextStyle: 'black',
+    onReachBottomDistance:50
   }
 }

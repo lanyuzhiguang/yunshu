@@ -12,8 +12,9 @@
 
     </div>
     </div>
+    <div class="loa" v-show="loameione">加载中....</div>
+    <div class="loa" v-show="loamei">---我是有底线滴---</div>
 
-    <div class="loa" v-show="loamei">我是有底线滴</div>
   </div>
 </template>
 
@@ -24,20 +25,22 @@
         loading:false,
         bookarr:[],
         pn:1,
-        size:3,
         loamei:false,
+        loameione:false,
         qidong:true
       }
     },
     methods: {
       getcollect(){
         let pn=this.pn
+        console.log(pn);
+        this.loameione=false
         this.loading=true;
         this.$fetch.get(`/collection?pn=${pn}&size=6`,{}, res=>{
           if(res.data.length==0){
             this.qidong=false
             this.loading=false
-
+            this.loamei=true
           }
           else{
             this.bookarr = this.bookarr.concat(res.data)
@@ -52,10 +55,6 @@
       },
 
     },
-    onShow(){
-      this.loamei=false
-      this.getcollect()
-    },
     onLoad() {
       this.loading=true
       // 查看是否授权
@@ -63,30 +62,34 @@
       wx.getSetting({
         success: function(res){
           if (res.authSetting['scope.userInfo']) {
-            self.loamei=false
+            // self.loamei=false
             self.getcollect()
             self.loading=false
           }
           else{
             self.loading=false
             wx.showToast({
-              title: '您还没有登录请登录',
+              title: '您还没有登录',
               duration: 2500
             });
           }
         }
       })
     },
+    onUnload(){
+      this.bookarr = []
+    },
     onReachBottom(){
       if(this.qidong){
+        this.loameione=true
         this.pn +=1
         this.getcollect()
       }
       else{
+        this.loameione=false
         this.loamei=true
       }
     }
-
     }
 </script>
 

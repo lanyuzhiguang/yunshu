@@ -80,11 +80,6 @@
       //
       // }
       },
-
-
-  //   onShow(){
-  //     this.getData()
-  // },
     onLoad() {
       this.loading=true
       // 查看是否授权
@@ -98,7 +93,7 @@
           else{
             self.loading=false
             wx.showToast({
-                  title: '您还没有登录请登录',
+                  title: '您还没有登录',
                   duration: 2500
                 });
           }

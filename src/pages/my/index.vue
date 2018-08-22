@@ -47,7 +47,7 @@
       <button v-show="canIUse"
                   class="btn"
                   open-type="getUserInfo"
-                  bindgetuserinfo="bindGetUserInfo"
+                  @getuserinfo="GetUserInfo"
                   @click="login">授权登录</button>
     </div>
    </div>
@@ -64,30 +64,30 @@
         lookarr:[],
         loginbtn:true,
         loading:false,
-        canIUse: wx.canIUse('button.open-type.getUserInfo')
+        canIUse: true
       }
     },
     methods: {
       initData(){
         this.bookarr=[]
-          this.lookarr=[]
       },
       login() {
-        this.initData()
-        loading:true
-        login()
-        loading:false
+        this.loading = true
+        login().then(() => {
+          this.canIUse=false
+          this.loading = false
+        })
       },
       getData() {
-        this.initData()
         this.$fetch.get('/readList',{},res=>{
           this.lookarr=res.data
+          this.loading=false
         })
       },
       getcollect(){
-        this.initData()
         this.$fetch.get('/collection',{}, res=>{
           this.bookarr=res.data
+          this.loading=false
         })
       },
       handlelook(){
@@ -100,41 +100,44 @@
           url: '/pages/collect/main'
         })
       },
-      bindGetUserInfo(e) {
-        console.log(e.detail.userInfo)
+      GetUserInfo(e) {
+        this.user=e.target.userInfo
+        this.getData()
+        this.getcollect()
       }
     },
-    // onShow(){
-    //   this.getData()
-    //   this.getcollect()
-    // },
     onLoad() {
       this.loading=true
       // 查看是否授权
       let self=this
       wx.getSetting({
         success: function(res){
+          console.log(res);
           if (res.authSetting['scope.userInfo']) {
             // 已经授权，可以直接调用 getUserInfo 获取头像昵称
             wx.getUserInfo({
               success: function(res) {
-                self.user=res.userInfo
-                console.log(res.userInfo);
-                // console.log(res.userInfo)
                 self.loginbtn=false
+                self.user=res.userInfo
                 self.getData()
                 self.getcollect()
-                self.loading=false
-                // console.log(self);
               }
             })
-          }
-          else{
+          } else{
+            self.num=true
             self.loading=false
+            console.log('meiyou');
           }
-        }
+
+        },
       })
     },
+
+
+    // onShow(){
+    //   this.getData()
+    //   this.getcollect()
+    // },
 
 
 

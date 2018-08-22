@@ -1,16 +1,29 @@
 <template>
-  <div class="allbook">
-    <img src="/static/Spinner-1s-63px.svg"
-         class="loading" v-show="loading">
-    <div class="allbook-data" v-if="!loading">
-      <div class="allbook-content"
+  <div class="home">
+    <div class="home-data" v-if="!loading">
+      <div class="swiper-content">
+        <swiper indicator-dots="true"
+                autoplay="true" interval="5000"
+                duration="1000" indicator-color="#ddd"
+                indicator-active-color="#fff" class="swiper">
+          <block  v-for="swiperitem in swiperarr" :key="swiperitem._id">
+            <swiper-item class="swiper-item">
+              <a :href="'/pages/counter/main?id='+ swiperitem.book._id" v-if="swiperitem.book">
+                <img :src="swiperitem.img" class="slide-image" />
+                <span class="swiper-title">{{swiperitem.title}}</span>
+              </a>
+            </swiper-item>
+          </block>
+        </swiper>
+      </div>
+      <div class="home-content"
            v-for="(categoryitem,index) in categoryarr" :key="index">
-        <div class="allbook-title" @click="handelecategory(categoryitem._id)">
+        <div class="home-title" @click="handelecategory(categoryitem._id)">
           <img :src="categoryitem.icon"
                class="category-img">&nbsp;{{categoryitem.title}}
         </div>
-        <div class="allbook-list" >
-          <div class="allbook-list-item"
+        <div class="home-list" >
+          <div class="home-list-item"
                v-for="(bookitem,bookindex) in categoryitem.books"
                :key="bookindex" @click="handlebook(bookitem._id)">
             <div class="item-img">
@@ -37,10 +50,9 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
-    <div class="loa" v-show="loameione">正在加载中...</div>
-    <div class="loa" v-show="loamei">---我是有底线滴---</div>
   </div>
 </template>
 
@@ -52,38 +64,30 @@
       return {
         swiperarr:[],
         categoryarr:[],
-        pn:1,
-        qidong:true,
-        loading:false,
-        loameione:false,
-        loamei:false,
+        pn:1
       }
     },
     components:{
       gettime
     },
     methods: {
+      getwiper () {
+        axios.get('/swiper').then(res => {
+          this.swiperarr=res.data
+        })
+      },
       getcategory(){
         let pn=this.pn
-        this.loameione=false
-        this.loading=true;
-        axios.get(`/category/books?pn=${pn}&size=2&booksSize=2`).then(res => {
-         if(res.data.length==0){
-           this.loading=false
-           this.qidong=false
-           this.loamei=true
-
-         }else{
-           this.categoryarr=this.categoryarr.concat(res.data)
-           this.loading=false
-         }
+        axios.get(`/category/books?pn=${pn}&size=4&booksSize=2`).then(res => {
+          this.categoryarr=res.data
+          console.log(this.categoryarr);
         })
       },
       handelecategory(val){
-        // getApp().globalData.category_id=val
-        // console.log(123);
-        wx.navigateTo({
-          url:`/pages/category/main?id=${val}`
+        getApp().globalData.category_id=val
+        console.log(123);
+        wx.switchTab({
+          url:'/pages/allbook/main'
         })
       },
       // getcategory(){
@@ -91,47 +95,38 @@
       //     this.categoryarr=res.data
       //   })
       // },
-      handlebook(id){
+      handlebook(val){
         wx.navigateTo({
-          url:`/pages/counter/main?id=${id}`
+          url:`/pages/counter/main?id=${val}`
         })
       }
     },
     mounted () {
+      this.getwiper();
       this.getcategory();
-    },
-    onUnload(){
-      this.bookarr = []
-    },
-    onReachBottom(){
-      if(this.qidong){
-        this.loameione=true
-        this.pn +=1
-        this.getcategory()
-      }
-      else{
-        this.loameione=false
-        this.loamei=true
-      }
     }
   }
 </script>
 
-<style scoped>
-  .allbook{
+<style>
+  .home{
     padding: 10px;
   }
-  .loading{
-    width: 200rpx;
-    height: 200rpx;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
+  .swiper,.swiper-item{
+    width: 100%;
+    height: 150px;
   }
-  .allbook-title{
+  .slide-image{
+    width: 100%;
+    height: 150px;
+  }
+  .swiper-title{
+    color: #fff;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+  }
+  .home-title{
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -146,11 +141,11 @@
     width: 30px;
     height: 40px;
   }
-  .allbook-content{
+  .home-content{
     padding: 10px 0;
     background: #fff;
   }
-  .allbook-list-item{
+  .home-list-item{
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
@@ -201,12 +196,8 @@
     display: flex;
     justify-content: flex-start;
   }
-  .loa{
-    text-align: center;
-    color: #8a8a8a;
-    font-size: 12px;
-  }
 
 
 </style>
+
 
