@@ -22,14 +22,11 @@
       }
     },
     methods:{
-
       getcatalogue(){
         this.loading=true
-        this.initData()
         axios.get(`/titles/${this.bookId}`).then(res=>{
           this.cataloguearr=res.data
           this.loading=false
-          // console.log(res.data);
         })
       },
       handlearticle(val,bookId,name){

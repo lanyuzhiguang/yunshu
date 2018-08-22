@@ -27,7 +27,7 @@
       </div>
     </div>
       <div class="book-data-botom">
-        <button @click="collect" :disabled="isCollected"> {{isCollected ? '已收藏' : '加入收藏'}}</button>
+        <button @click="collect"> {{isCollected ? '删除收藏' : '加入收藏'}}</button>
         <button open-type="share">分享好友</button>
         <!--<button @click="handleClick">分享朋友圈</button>-->
       </div>
@@ -90,24 +90,47 @@ export default {
     },
     collect(){
       let bookId =this.bookId
-       this.$fetch.post('/collection',{bookId}, res=>{
-         if(res.code===200){
-           wx.showToast({
-             title: '收藏成功',
-             icon: 'success',
-             duration: 1000
-           })
-           this.isCollected= 1
-         }
-         else{
-           wx.showToast({
-             title: res.msg,
-             icon: 'warning',
-             duration: 1000
-           })
-         }
-      })
-    }
+      console.log(this.isCollected)
+      if(!this.isCollected){
+        this.$fetch.post('/collection',{bookId}, res=>{
+          if(res.code===200){
+            wx.showToast({
+              title: '收藏成功',
+              icon: 'success',
+              duration: 1000
+            })
+            this.isCollected= 1
+          }
+          else{
+            wx.showToast({
+              title: res.msg,
+              icon: 'warning',
+              duration: 1000
+            })
+          }
+        })
+      }
+      else{
+        this.$fetch.delete(`/collection/${this.bookId}`,{}, res=>{
+          if(res.code===200){
+            wx.showToast({
+              title: '删除成功',
+              icon: 'success',
+              duration: 1000
+            })
+            this.isCollected= 0
+          }
+          else{
+            wx.showToast({
+              title: res.msg,
+              icon: 'warning',
+              duration: 1000
+            })
+          }
+        })
+      }
+      }
+
     // handleClick () {
     //   wx.showModal({
     //     title: '该功能将在上线后逐步完善'

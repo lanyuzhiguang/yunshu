@@ -75,6 +75,7 @@
 
          }else{
            this.categoryarr=this.categoryarr.concat(res.data)
+           console.log(res.data);
            this.loading=false
          }
         })

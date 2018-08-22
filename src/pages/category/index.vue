@@ -83,17 +83,18 @@
           url:`/pages/counter/main?id=${val}`
         })
       },
-
     },
     onLoad (options) {
       this.typeId= options.id
+      this.pn=1
+      this.loamei=false
+      this.qidong=true
       this.getcategory();
     },
     onUnload(){
       this.categoryarr = []
     },
     onReachBottom(){
-
       if(this.qidong){
         this.loameione=true
         this.pn +=1

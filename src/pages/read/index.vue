@@ -44,7 +44,6 @@
       timego
     },
     methods: {
-
       getData() {
         this.loading=true
         this.$fetch.get('/readList', {},res=> {

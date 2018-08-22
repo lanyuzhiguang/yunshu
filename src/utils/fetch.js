@@ -38,6 +38,25 @@ export const fetch = {
       }
     })
   },
+  delete (url, data,cb) {
+    let token=wx.getStorageSync('token')
+    let header={'content-type': 'application/json'}
+    if(token){
+      header.token=token
+    }
+    wx.request({
+      url: baseUrl + url,
+      method: 'delete',
+      data,
+      header,
+      success (res){
+        if(res.header.Token){
+          wx.setStorageSync('token',res.header.Token)
+        }
+        cb(res.data)
+      }
+    })
+  },
 }
 export const login=function() {
   return new Promise(resolve=> {
