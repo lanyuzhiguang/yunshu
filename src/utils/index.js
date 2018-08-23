@@ -1,3 +1,5 @@
+import { login } from "./fetch";
+
 const baseUrl = 'https://m.yaojunrong.com'
 export const axios = {
   get (url, data) {
@@ -13,7 +15,8 @@ export const axios = {
         data,
         header,
         success: function (res) {
-          resolve(res.data)
+            resolve(res.data)
+
         },
         fail (err) {
           reject(err)
@@ -34,7 +37,7 @@ export const axios = {
         data,
         header,
         success: function (res) {
-          resolve(res.data)
+            resolve(res.data)
         },
         fail (err) {
           reject(err)

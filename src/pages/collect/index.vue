@@ -37,7 +37,7 @@
         this.loameione=false
         this.loading=true;
         this.$fetch.get(`/collection?pn=${pn}&size=6`,{}, res=>{
-          if(res.data.length==0){
+            if(res.data.length==0){
             this.qidong=false
             this.loading=false
             this.loamei=true
@@ -53,9 +53,18 @@
           url:`/pages/counter/main?id=${val}`
         })
       },
+      login() {
+        return new Promise(resolve => {
+          this.loading = true;
+          login().then(() => {
+            this.loading = false;
+            resolve()
+          });
+        })
+      },
 
     },
-    onLoad() {
+    onShow() {
       this.loading=true
       // 查看是否授权
       let self=this

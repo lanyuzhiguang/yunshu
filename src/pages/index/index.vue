@@ -38,7 +38,7 @@
                 <div class="author">{{bookitem.author}}</div>
                 <div class="time">
                     <span class="updata">
-                      <gettime :time="bookitem.createTime"></gettime>
+                      <gettime :time="bookitem.updateTime"></gettime>
                     </span>
                   <span class="look">{{bookitem.looknums}}人在看</span>
                 </div>
@@ -96,7 +96,7 @@ export default {
       })
     }
   },
-  mounted () {
+  onShow () {
     this.getwiper();
     this.getcategory();
   }

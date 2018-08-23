@@ -35,7 +35,6 @@
 
       </div>
     </div>
-    <div class="loa" v-show="loameione">正在加载中...</div>
     <div class="loa" v-show="loamei">---我是有底线滴---</div>
   </div>
 </template>
@@ -53,7 +52,6 @@
         NavigationBarTitle:'',
         qidong:true,
         loamei:false,
-        loameione:false
       }
     },
     components:{
@@ -61,7 +59,6 @@
     },
     methods: {
       getcategory(){
-        this.loameione=false
         this.loading=true
         let pn=this.pn
         axios.get(`/category/${this.typeId}/books?pn=${pn}&size=4`).then(res => {
@@ -70,12 +67,20 @@
             this.qidong=false
             this.loamei=true
           }
+          else if(res.data.books.length<4){
+            this.NavigationBarTitle=res.data.title
+            wx.setNavigationBarTitle({ title: this.NavigationBarTitle })
+            this.categoryarr=this.categoryarr.concat(res.data.books)
+            this.loading=false
+             this.loamei=true
+          }
           else{
             this.NavigationBarTitle=res.data.title
             wx.setNavigationBarTitle({ title: this.NavigationBarTitle })
             this.categoryarr=this.categoryarr.concat(res.data.books)
             this.loading=false
           }
+
         })
       },
       handlebook(val){
@@ -95,8 +100,8 @@
       this.categoryarr = []
     },
     onReachBottom(){
+      this.loamei=false
       if(this.qidong){
-        this.loameione=true
         this.pn +=1
         this.getcategory()
       }

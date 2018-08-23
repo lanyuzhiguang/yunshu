@@ -111,7 +111,6 @@
       let self = this;
       wx.getSetting({
         success: function(res) {
-          console.log(res);
           if (res.authSetting["scope.userInfo"]) {
             // 已经授权，可以直接调用 getUserInfo 获取头像昵称
             wx.getUserInfo({
@@ -123,7 +122,8 @@
                 self.getcollect();
               }
             });
-          } else {
+          }
+          else {
             self.num = true;
             self.loading = false;
           }
@@ -141,8 +141,8 @@
 
 <style scoped>
   .loading {
-    width: 200 rpx;
-    height: 200 rpx;
+    width: 200rpx;
+    height: 200rpx;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -150,21 +150,20 @@
     right: 0;
     margin: auto;
   }
-
   .content {
     margin: 0 auto;
     width: 100%;
-    height: 800 rpx;
+    height: 360rpx;
     background: #1982D3;
-    padding-bottom: 40 rpx;
+    padding-bottom: 20rpx;
   }
 
   .message {
-    height: 400 rpx;
+    height: 240rpx;
     display: flex;
     align-items:  center;
     justify-content:flex-start;
-    width: 400 rpx;
+    width: 240rpx;
   }
   .message-imgs{
     width: 120rpx;
@@ -214,13 +213,12 @@
   }
 
   .btns {
-    padding: 0 40 rpx;
-    margin-top: 500 rpx;
+    padding: 0 40rpx;
+    margin-top: 300rpx;
   }
 
   .btn {
     padding: 0 40rpx;
-    margin-top: 500rpx;
     background: #1982D3;
     color: #fff;
   }

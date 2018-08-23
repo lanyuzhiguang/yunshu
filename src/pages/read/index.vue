@@ -79,7 +79,7 @@
       //
       // }
       },
-    onLoad() {
+    onShow() {
       this.loading=true
       // 查看是否授权
       let self=this
@@ -152,7 +152,7 @@
     height: 30rpx;
     padding-top: 16rpx;
     color: #ccc;
-    font-size: 12px;
+    font-size: 10px;
     display: flex;
     justify-content: space-between;
   }

@@ -34,7 +34,15 @@ export const fetch = {
         if(res.header.Token){
           wx.setStorageSync('token',res.header.Token)
         }
-        cb(res.data)
+        else {
+          if(res.data.code==401){
+            login()
+          }
+          else{ cb(res.data )
+          }
+         }
+
+
       }
     })
   },

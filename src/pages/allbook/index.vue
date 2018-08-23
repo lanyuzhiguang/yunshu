@@ -29,7 +29,7 @@
                 <div class="author">{{bookitem.author}}</div>
                 <div class="time">
                     <span class="updata">
-                      <gettime :time="bookitem.createTime"></gettime>
+                      <gettime :time="bookitem.updateTime"></gettime>
                     </span>
                   <span class="look">{{bookitem.looknums}}人在看</span>
                 </div>
@@ -50,7 +50,6 @@
   export default {
     data () {
       return {
-        swiperarr:[],
         categoryarr:[],
         pn:1,
         qidong:true,
@@ -72,10 +71,8 @@
            this.loading=false
            this.qidong=false
            this.loamei=true
-
          }else{
            this.categoryarr=this.categoryarr.concat(res.data)
-           console.log(res.data);
            this.loading=false
          }
         })
@@ -98,7 +95,7 @@
         })
       }
     },
-    mounted () {
+    onShow () {
       this.getcategory();
     },
     onUnload(){
